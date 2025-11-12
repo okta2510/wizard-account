@@ -1,4 +1,4 @@
-import { BasicInfo, Details, Employee, Departments } from './types';
+import { BasicInfo, Details, Employee, Department } from './types';
 
 const STORAGE_KEYS = {
   BASIC_INFO: 'employees_basic_info',
@@ -7,32 +7,39 @@ const STORAGE_KEYS = {
   LOCATIONS: 'locations',
 };
 
-export function initializeMockData() {
-  if (!localStorage.getItem(STORAGE_KEYS.DEPARTMENTS)) {
-    localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify([
-      { id: 1, name: 'Lending' },
-      { id: 2, name: 'Funding' },
-      { id: 3, name: 'Operations' },
-      { id: 4, name: 'Engineering' },
-    ]));
-  }
+// export function initializeMockData() {
+//   if (!localStorage.getItem(STORAGE_KEYS.DEPARTMENTS)) {
+//     getDepartments().then((departments) => {
+//       if (Array.isArray(departments)) {
+//       localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(departments));
+//       } else {
+//       localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify([]));
+//       }
+//     }).catch(() => {
+//       // localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify([]));
+//     });
+//   }
 
-  if (!localStorage.getItem(STORAGE_KEYS.LOCATIONS)) {
-    localStorage.setItem(STORAGE_KEYS.LOCATIONS, JSON.stringify([
-      { id: 1, name: 'Jakarta' },
-      { id: 2, name: 'Depok' },
-      { id: 3, name: 'Surabaya' },
-    ]));
-  }
+//   if (!localStorage.getItem(STORAGE_KEYS.LOCATIONS)) {
+//       getLocations().then((locations) => {
+//       if (Array.isArray(locations)) {
+//       localStorage.setItem(STORAGE_KEYS.LOCATIONS, JSON.stringify(locations));
+//       } else {
+//       localStorage.setItem(STORAGE_KEYS.LOCATIONS, JSON.stringify([]));
+//       }
+//     }).catch(() => {
+//       localStorage.setItem(STORAGE_KEYS.LOCATIONS, JSON.stringify([]));
+//     });
+//   }
 
-  if (!localStorage.getItem(STORAGE_KEYS.BASIC_INFO)) {
-    localStorage.setItem(STORAGE_KEYS.BASIC_INFO, JSON.stringify([]));
-  }
+//   // if (!localStorage.getItem(STORAGE_KEYS.BASIC_INFO)) {
+//   //   localStorage.setItem(STORAGE_KEYS.BASIC_INFO, JSON.stringify([]));
+//   // }
 
-  if (!localStorage.getItem(STORAGE_KEYS.DETAILS)) {
-    localStorage.setItem(STORAGE_KEYS.DETAILS, JSON.stringify([]));
-  }
-}
+//   // if (!localStorage.getItem(STORAGE_KEYS.DETAILS)) {
+//   //   localStorage.setItem(STORAGE_KEYS.DETAILS, JSON.stringify([]));
+//   // }
+// }
 
 // export function getDepartments(search?: string) {
 //   const departments = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEPARTMENTS) || '[]');
@@ -42,24 +49,21 @@ export function initializeMockData() {
 //   );
 // }
 
-export async function getDepartments(search?: string): Promise<Departments[]> {
+export async function getDepartments(search?: string): Promise<Department[]> {
   try {
-    const base = (process.env as any).API_STEP1 || '';
+  const base = process.env.NEXT_PUBLIC_API_STEP1 || '';
     const url = new URL(`${base.replace(/\/+$/,'')}/departments`);
-    if (search) url.searchParams.set('search', search);
+    if (search) url.searchParams.set('name_like', search);
     const res = await fetch(url.toString());
     if (!res.ok) throw new Error(`Failed to fetch departments: ${res.status}`);
     const departments = await res.json();
-    if (Array.isArray(departments)) {
-      localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(departments));
-    }
     return departments;
-  } catch (err) {
-    const departments = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEPARTMENTS) || '[]');
-    if (!search) return departments;
-    return departments.filter((dept: any) =>
-      dept.name.toLowerCase().includes(search.toLowerCase())
-    );
+  } catch {
+    // const departments = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEPARTMENTS) || '[]');
+    // if (!search) return departments;
+    // return departments.filter((dept: Department) =>
+    //   dept.name.toLowerCase().includes(search.toLowerCase())
+    // );
   }
 }
 
@@ -71,81 +75,154 @@ export async function getDepartments(search?: string): Promise<Departments[]> {
 //   );
 // }
 
-export async function getLocations(search?: string): Promise<Departments[]> {
+export async function getLocations(search?: string): Promise<Department[]> {
   try {
-    const base = (process.env as any).API_STEP2 || '';
+  const base = process.env.NEXT_PUBLIC_API_STEP2 || '';
     const url = new URL(`${base.replace(/\/+$/,'')}/locations`);
-    if (search) url.searchParams.set('search', search);
+    if (search) url.searchParams.set('name_like', search);
     const res = await fetch(url.toString());
-    if (!res.ok) throw new Error(`Failed to fetch departments: ${res.status}`);
+    if (!res.ok) throw new Error(`Failed to fetch location: ${res.status}`);
     const locations = await res.json();
-    if (Array.isArray(locations)) {
-      localStorage.setItem(STORAGE_KEYS.LOCATIONS, JSON.stringify(locations));
-    }
-    return locations;
-  } catch (err) {
-    const locations = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCATIONS) || '[]');
+    return locations
+  } catch {
+    const locations = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCATIONS) || '[]') as Department[];
     if (!search) return locations;
-    return locations.filter((dept: any) =>
+    return locations.filter((dept: Department) =>
       dept.name.toLowerCase().includes(search.toLowerCase())
     );
   }
 }
 
 export function generateEmployeeId(department: string): string {
-  const basicInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.BASIC_INFO) || '[]') as BasicInfo[];
   const deptPrefix = department.substring(0, 3).toUpperCase();
-  const count = basicInfo.filter(emp => emp.employee_id.startsWith(deptPrefix)).length;
-  const nextNumber = (count + 1).toString().padStart(3, '0');
+  // simple fallback id generator; server should normally provide canonical id
+  const nextNumber = Date.now().toString().slice(-6);
   return `${deptPrefix}-${nextNumber}`;
 }
 
-export function addBasicInfo(data: BasicInfo): BasicInfo {
-  const basicInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.BASIC_INFO) || '[]') as BasicInfo[];
+// export function addBasicInfo(data: BasicInfo): BasicInfo {
+  // const basicInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.BASIC_INFO) || '[]') as BasicInfo[];
+  // const newData = {
+  //   ...data,
+  //   id: Date.now(),
+  // };
+  // basicInfo.push(newData);
+  // localStorage.setItem(STORAGE_KEYS.BASIC_INFO, JSON.stringify(basicInfo));
+  // return newData;
+// }
+
+export async function addBasicInfo(data: BasicInfo): Promise<BasicInfo> {
+  const newData = {
+    ...data,
+    // server will assign canonical id; add temporary timestamp id if needed
+    id: Date.now(),
+  } as BasicInfo;
+
+  try {
+  const base = process.env.NEXT_PUBLIC_API_STEP1 || '';
+    const url = new URL(`${base.replace(/\/+$/,'')}/basicInfo`);
+    const res = await fetch(url.toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData),
+    });
+    if (!res.ok) throw new Error(`Failed to POST basicInfo: ${res.status}`);
+    const created = await res.json();
+    return created as BasicInfo;
+  } catch {
+    // if API fails, throw so caller can handle errors upstream
+    throw new Error('Failed to persist basic info to API');
+  }
+}
+
+// export function addDetails(data: Details): Details {
+//   const details = JSON.parse(localStorage.getItem(STORAGE_KEYS.DETAILS) || '[]') as Details[];
+//   const newData = {
+//     ...data,
+//     id: Date.now(),
+//   };
+//   details.push(newData);
+//   localStorage.setItem(STORAGE_KEYS.DETAILS, JSON.stringify(details));
+//   return newData;
+// }
+
+export async function addDetails(data: Details): Promise<Details> {
   const newData = {
     ...data,
     id: Date.now(),
-  };
-  basicInfo.push(newData);
-  localStorage.setItem(STORAGE_KEYS.BASIC_INFO, JSON.stringify(basicInfo));
-  return newData;
+  } as Details;
+
+  try {
+    const base = process.env.NEXT_PUBLIC_API_STEP2 || '';
+    const url = new URL(`${base.replace(/\/+$/,'')}/details`);
+    const res = await fetch(url.toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData),
+    });
+    if (!res.ok) throw new Error(`Failed to POST details: ${res.status}`);
+    const created = await res.json();
+    return created as Details;
+  } catch {
+    throw new Error('Failed to persist details to API');
+  }
 }
 
-export function addDetails(data: Details): Details {
-  const details = JSON.parse(localStorage.getItem(STORAGE_KEYS.DETAILS) || '[]') as Details[];
-  const newData = {
-    ...data,
-    id: Date.now(),
-  };
-  details.push(newData);
-  localStorage.setItem(STORAGE_KEYS.DETAILS, JSON.stringify(details));
-  return newData;
-}
-
-export function getBasicInfo(page: number = 1, limit: number = 10) {
-  const basicInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.BASIC_INFO) || '[]') as BasicInfo[];
-  const sorted = basicInfo.sort((a, b) => (b.id || 0) - (a.id || 0));
+// export function getBasicInfo(page: number = 1, limit: number = 10) {
+//   const basicInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.BASIC_INFO) || '[]') as BasicInfo[];
+//   const sorted = basicInfo.sort((a, b) => (b.id || 0) - (a.id || 0));
+//   const from = (page - 1) * limit;
+//   const to = from + limit;
+//   return {
+//     data: sorted.slice(from, to),
+//     total: basicInfo.length,
+//   };
+// 
+export async function getBasicInfo(page: number = 1, limit: number = 10) {
   const from = (page - 1) * limit;
   const to = from + limit;
-  return {
-    data: sorted.slice(from, to),
-    total: basicInfo.length,
-  };
+  try {
+    const base = process.env.NEXT_PUBLIC_API_STEP1 || '';
+    const url = new URL(`${base.replace(/\/+$/,'')}/basicInfo`);
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`Failed to fetch basicInfo: ${res.status}`);
+    const serverData: BasicInfo[] = await res.json();
+    const sorted = serverData.slice().sort((a, b) => (b.id || 0) - (a.id || 0));
+    // localStorage.setItem(STORAGE_KEYS.BASIC_INFO, JSON.stringify(sorted));
+    return {
+      data: sorted.slice(from, to),
+      total: serverData.length,
+    };
+  } catch {
+    throw new Error('Failed to load basic info from API');
+  }
 }
 
-export function getDetails() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEYS.DETAILS) || '[]') as Details[];
+// export function getDetails() {
+//   return JSON.parse(localStorage.getItem(STORAGE_KEYS.DETAILS) || '[]') as Details[];
+// }
+export async function getDetails(): Promise<Details[]> {
+  try {
+  const base = process.env.NEXT_PUBLIC_API_STEP2 || '';
+    const url = new URL(`${base.replace(/\/+$/,'')}/details`);
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`Failed to fetch details: ${res.status}`);
+    const serverData: Details[] = await res.json();
+    // localStorage.setItem(STORAGE_KEYS.DETAILS, JSON.stringify(serverData));
+    return serverData;
+  } catch {
+    throw new Error('Failed to load details from API');
+  }
 }
 
-export function getMergedEmployees(page: number = 1, limit: number = 10): {
-  employees: Employee[];
-  total: number;
-} {
-  const basicInfo = getBasicInfo(page, limit);
-  const details = getDetails();
-
-  const employees = basicInfo.data.map(basic => {
+export async function getMergedEmployees(page: number = 1, limit: number = 10){
+  const basicInfo = await getBasicInfo(page, limit);
+  const details = await getDetails();
+  console.log(basicInfo,details)
+  const employees = basicInfo?.data?.map(basic => {
     const detail = details.find(d => d.email === basic.email || d.employee_id === basic.employee_id);
+    // const detail = details.filter(d => d.email === basic.email || d.employee_id === basic.employee_id);
+    console.log(detail)
     return {
       ...basic,
       photo: detail?.photo,

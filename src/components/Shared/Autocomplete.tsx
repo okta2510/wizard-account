@@ -48,7 +48,7 @@ export default function Autocomplete({ value, onSelect, endpoint, placeholder, e
       } else {
         data = await getLocations(query);
       }
-
+      console.log(data)
       setSuggestions(data?.map(item => item.name));
     } catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -86,10 +86,10 @@ export default function Autocomplete({ value, onSelect, endpoint, placeholder, e
           {isLoading && (
             <div className="autocomplete-loading">Loading...</div>
           )}
-          {!isLoading && suggestions.length === 0 && inputValue && (
+          {!isLoading && suggestions?.length === 0 && inputValue && (
             <div className="autocomplete-no-results">No results found</div>
           )}
-          {!isLoading && suggestions.map((suggestion, index) => (
+          {!isLoading && suggestions?.map((suggestion, index) => (
             <div
               key={index}
               className="autocomplete-item"
@@ -98,7 +98,7 @@ export default function Autocomplete({ value, onSelect, endpoint, placeholder, e
               {suggestion}
             </div>
           ))}
-          {suggestions.length === 0 && !inputValue && (
+          {suggestions?.length === 0 && !inputValue && (
             <div className="autocomplete-no-results">Type something, input search here...</div>
           )} 
         </div>

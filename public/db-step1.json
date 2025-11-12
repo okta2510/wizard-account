@@ -1,9 +1,78 @@
 {
   "departments": [
-    { "id": 1, "name": "Lending" },
-    { "id": 2, "name": "Funding" },
-    { "id": 3, "name": "Operations" },
-    { "id": 4, "name": "Engineering" }
+    {
+      "id": 1,
+      "name": "Lending"
+    },
+    {
+      "id": 2,
+      "name": "Funding"
+    },
+    {
+      "id": 3,
+      "name": "Operations"
+    },
+    {
+      "id": 4,
+      "name": "Engineering"
+    }
   ],
-  "basicInfo": []
+  "basicInfo": [
+    {
+      "employee_id": "OPE-001",
+      "full_name": "okta",
+      "email": "me@oktaviardi.com",
+      "department": "Operations",
+      "role": "Ops",
+      "id": 1762966837297
+    },
+    {
+      "employee_id": "OPE-002",
+      "full_name": "oktaviardi pratama pratama22",
+      "email": "me@oktaviardi.com",
+      "department": "Operations",
+      "role": "Admin",
+      "id": 1762967055137
+    },
+    {
+      "employee_id": "OPE-003",
+      "full_name": "oktaviardi pratama pratama",
+      "email": "me@oktaviardi.com",
+      "department": "Operations",
+      "role": "Ops",
+      "id": 1762967980871
+    },
+    {
+      "employee_id": "ENG-088488",
+      "full_name": "okta",
+      "email": "me@oktaviardi.com",
+      "department": "Engineering",
+      "role": "Admin",
+      "id": 1762972104218
+    },
+    {
+      "employee_id": "OPE-224238",
+      "full_name": "oktaviardi pratama",
+      "email": "oktaviardi2510@gmail.com",
+      "department": "Operations",
+      "role": "Admin",
+      "id": 1762972239666
+    },
+    {
+      "employee_id": "OPE-273100",
+      "full_name": "oktaviardi pratama",
+      "email": "me@oktaviardi.com",
+      "department": "Operations",
+      "role": "Admin",
+      "id": 1762972292336
+    },
+    {
+      "employee_id": "OPE-408426",
+      "full_name": "oktaviardi test",
+      "email": "me2@oktaviardi.com",
+      "department": "Operations",
+      "role": "Ops",
+      "id": 1762972424185
+    }
+  ]
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Employee } from '@/lib/types';
-import { getMergedEmployees, initializeMockData } from '@/lib/storage';
+import { getMergedEmployees } from '@/lib/storage';
 import '../../styles/globals.css';
 import '../../styles/employees.css';
 
@@ -14,10 +14,10 @@ export default function EmployeesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = process.env.NEXT_PUBLIC_PER_PAGE || 10;
+  const itemsPerPage = parseInt(process.env.NEXT_PUBLIC_PER_PAGE ?? '10', 10);
 
   useEffect(() => {
-    initializeMockData();
+    // initializeMockData();
     fetchEmployees();
   }, []);
 
@@ -25,10 +25,10 @@ export default function EmployeesPage() {
     fetchEmployees();
   }, [currentPage]);
 
-  const fetchEmployees = () => {
+  const  fetchEmployees = async() => {
     setIsLoading(true);
     try {
-      const { employees: data, total } = getMergedEmployees(currentPage, itemsPerPage);
+      const { employees: data, total } = await getMergedEmployees(currentPage, itemsPerPage);
       setEmployees(data);
       setTotalPages(Math.ceil(total / itemsPerPage));
     } catch (error) {
@@ -70,7 +70,7 @@ export default function EmployeesPage() {
                 </tr>
               </thead>
               <tbody>
-                {employees.map((employee) => (
+                {employees?.map((employee) => (
                   <tr key={employee.id}>
                     <td>
                       {employee.photo ? (
@@ -114,7 +114,7 @@ export default function EmployeesPage() {
             </div>
           )}
 
-          {employees.length === 0 && (
+          {employees?.length === 0 && (
             <div className="no-results">
               No employees found. Add your first employee to get started.
             </div>

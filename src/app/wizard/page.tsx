@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import StepOne from './step1/page';
 import StepTwo from './step2/page';
 import { Role, BasicInfo } from '../../lib/types';
-import { initializeMockData } from '@/lib/storage';
+// import { initializeMockData } from '@/lib/storage';
 import '../../styles/globals.css';
 import '../../styles/wizard.css';
 import Link from 'next/link';
@@ -17,9 +17,9 @@ function WizardContent() {
   const [currentStep, setCurrentStep] = useState(1);
   const [step1Data, setStep1Data] = useState<Partial<BasicInfo>>({});
 
-  useEffect(() => {
-    initializeMockData();
-  }, []);
+  // useEffect(() => {
+  //   initializeMockData();
+  // }, []);
 
   useEffect(() => {
     const roleParam = searchParams.get('role');
