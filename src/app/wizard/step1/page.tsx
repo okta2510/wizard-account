@@ -80,7 +80,7 @@ export default function StepOne({ onComplete, role }: StepOneProps) {
   };
 
   const handleClearDraft = () => {
-    localStorage.removeItem(`draft_${role}_step1`);
+    localStorage.removeItem(`draft_${role}`);
     setFormData({
       full_name: '',
       email: '',

@@ -111,8 +111,8 @@ export default function StepTwo({ step1Data, role, onBack }: StepTwoProps) {
       setProgress(100);
       setSubmitProgress(prev => [...prev, '🎉 All data processed successfully!']);
 
-      localStorage.removeItem(`draft_${role}_step1`);
-      localStorage.removeItem(`draft_${role}_step2`);
+      localStorage.removeItem(`draft_${role}`);
+      localStorage.removeItem(`draft_${role}`);
 
       await delay(1000);
       router.push('/employees');
@@ -125,7 +125,7 @@ export default function StepTwo({ step1Data, role, onBack }: StepTwoProps) {
   };
 
   const handleClearDraft = () => {
-    localStorage.removeItem(`draft_${role}_step2`);
+    localStorage.removeItem(`draft_${role}`);
     setFormData({
       photo: '',
       employment_type: '',

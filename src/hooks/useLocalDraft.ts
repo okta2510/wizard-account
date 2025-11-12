@@ -11,7 +11,7 @@ export function useDraftPersistence<T>(
   const isInitialMount = useRef(true);
 
   useEffect(() => {
-    const savedDraft = localStorage.getItem(`draft_${role}_step${step}`);
+    const savedDraft = localStorage.getItem(`draft_${role}`);
     if (savedDraft) {
       try {
         const parsed = JSON.parse(savedDraft);
@@ -31,7 +31,7 @@ export function useDraftPersistence<T>(
     }
 
     timerRef.current = setTimeout(() => {
-      localStorage.setItem(`draft_${role}_step${step}`, JSON.stringify(formData));
+      localStorage.setItem(`draft_${role}`, JSON.stringify(formData));
     }, 2000);
 
     return () => {
