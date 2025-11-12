@@ -49,7 +49,6 @@ export default function Autocomplete({ value, onSelect, endpoint, placeholder, e
         data = await getLocations(query);
       }
 
-      console.log(data)
       setSuggestions(data?.map(item => item.name));
     } catch (error) {
       console.error('Error fetching suggestions:', error);
