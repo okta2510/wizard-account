@@ -6,9 +6,14 @@
     "dev": "next dev -p 3100 --webpack",
     "build": "next build --webpack",
     "start": "next start -p 3100",
-    "lint": "eslint"
+    "lint": "eslint",
+    "api": "npx json-server --watch ./public/db-step1.json --port 4001",
+    "api2": "npx json-server --watch ./public/db-step2.json --port 4002"
   },
   "dependencies": {
+    "@radix-ui/react-toast": "^1.2.15",
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
