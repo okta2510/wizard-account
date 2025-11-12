@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import StepOne from './step1/page';
 import StepTwo from './step2/page';
@@ -52,6 +52,18 @@ function WizardContent() {
     }
   };
 
+  // ensure TypeScript treats StepOne/StepTwo as components accepting the expected props
+  const StepOneComp = (StepOne as unknown) as React.ComponentType<{
+    onComplete: (data: Partial<BasicInfo>) => void;
+    role: Role;
+  }>;
+
+  const StepTwoComp = (StepTwo as unknown) as React.ComponentType<{
+    step1Data: Partial<BasicInfo>;
+    role: Role;
+    onBack?: () => void;
+  }>;
+
   return (
     <div className="wizard-container">
       <div className="wizard-header">
@@ -90,10 +102,10 @@ function WizardContent() {
 
       <div className="wizard-content">
         {currentStep === 1 && role === 'admin' && (
-          <StepOne onComplete={handleStep1Complete} role={role} />
+          <StepOneComp onComplete={handleStep1Complete} role={role} />
         )}
         {currentStep === 2 && (
-          <StepTwo
+          <StepTwoComp
             step1Data={step1Data}
             role={role}
             onBack={role === 'admin' ? handleBack : undefined}

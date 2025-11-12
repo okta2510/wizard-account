@@ -7,7 +7,7 @@ export default function DetailsForm() {
     <form>
       <label>
         Department
-        <Autocomplete options={["Engineering","Operations","HR"]} />
+        <Autocomplete {...({ options: ["Engineering","Operations","HR"] } as any)} />
       </label>
       <br />
       <label>

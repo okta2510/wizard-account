@@ -19,6 +19,7 @@ export async function getDepartments(search?: string): Promise<Department[]> {
     const departments = await res.json();
     return departments;
   } catch {
+    return []
   }
 }
 
@@ -33,11 +34,7 @@ export async function getLocations(search?: string): Promise<Department[]> {
     const locations = await res.json();
     return locations
   } catch {
-    const locations = JSON.parse(localStorage.getItem(STORAGE_KEYS.LOCATIONS) || '[]') as Department[];
-    if (!search) return locations;
-    return locations.filter((dept: Department) =>
-      dept.name.toLowerCase().includes(search.toLowerCase())
-    );
+    return []
   }
 }
 

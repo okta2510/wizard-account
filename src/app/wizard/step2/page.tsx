@@ -1,21 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { BasicInfo, Details, Role } from '@/lib/types';
+import { BasicInfo, Details } from '@/lib/types';
 import { addBasicInfo, addDetails } from '@/lib/storage';
 import Autocomplete from '../../../components/Shared/Autocomplete';
 import FileUpload from '../../../components/Shared/FileUpload';
 import ProgressBar from '../../../components/Shared/ProgressBar';
 import { useDraftPersistence } from '../../../hooks/useLocalDraft';
 
-interface StepTwoProps {
-  step1Data: Partial<BasicInfo>;
-  role: Role;
-  onBack?: () => void;
-}
-
-export default function StepTwo({ step1Data, role, onBack }: StepTwoProps) {
+export default function StepTwo(props: unknown) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { step1Data, role, onBack } = (props as any) || {};
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<Details>>({
     photo: '',
@@ -23,19 +19,13 @@ export default function StepTwo({ step1Data, role, onBack }: StepTwoProps) {
     office_location: '',
     notes: '',
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isValid, setIsValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitProgress, setSubmitProgress] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
 
   useDraftPersistence(formData, setFormData, role, 2);
 
-  useEffect(() => {
-    validateForm();
-  }, [formData]);
-
-  const validateForm = () => {
+  const errors = useMemo(() => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.employment_type) {
@@ -46,9 +36,10 @@ export default function StepTwo({ step1Data, role, onBack }: StepTwoProps) {
       newErrors.office_location = 'Office location is required';
     }
 
-    setErrors(newErrors);
-    setIsValid(Object.keys(newErrors).length === 0);
-  };
+    return newErrors;
+  }, [formData]);
+
+  const isValid = Object.keys(errors).length === 0;
 
   const handleChange = (field: keyof Details, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));

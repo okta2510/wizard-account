@@ -7,7 +7,7 @@ export function useDraftPersistence<T>(
   role: Role,
   step: number
 ) {
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const isInitialMount = useRef(true);
 
   useEffect(() => {

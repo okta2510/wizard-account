@@ -34,3 +34,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Run tests
+
+This project includes Jest + React Testing Library tests. Before running tests, install dependencies (including devDependencies):
+
+```bash
+npm install
+```
+
+Then run the test suite:
+
+```bash
+npm run test
+```
+
+If you prefer to run tests in watch mode during development:
+
+```bash
+npm run test:watch
+```
+
+# Start step1 API on port 4001
+```bash
+npm run api
+```
+
+# Start step2 API on port 4002
+
+```bash
+npm run api2
+```

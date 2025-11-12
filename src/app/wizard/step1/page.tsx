@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { BasicInfo, Role } from '@/lib/types';
 import { generateEmployeeId } from '@/lib/storage';
 import Autocomplete from '../../../components/Shared/Autocomplete';
@@ -11,7 +11,8 @@ interface StepOneProps {
   role: Role;
 }
 
-export default function StepOne({ onComplete, role }: StepOneProps) {
+export default function StepOne(props: unknown) {
+  const { onComplete, role } = (props as StepOneProps) || {};
   const [formData, setFormData] = useState<Partial<BasicInfo>>({
     full_name: '',
     email: '',
@@ -19,28 +20,14 @@ export default function StepOne({ onComplete, role }: StepOneProps) {
     role: '',
     employee_id: '',
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isValid, setIsValid] = useState(false);
-
   useDraftPersistence(formData, setFormData, role, 1);
-
-  useEffect(() => {
-    validateForm();
-  }, [formData]);
-
-  useEffect(() => {
-    if (formData.department) {
-      const newId = generateEmployeeId(formData.department);
-      setFormData(prev => ({ ...prev, employee_id: newId }));
-    }
-  }, [formData.department]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validateForm = () => {
+  const errors = useMemo(() => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.full_name?.trim()) {
@@ -61,16 +48,18 @@ export default function StepOne({ onComplete, role }: StepOneProps) {
       newErrors.role = 'Role is required';
     }
 
-    setErrors(newErrors);
-    setIsValid(Object.keys(newErrors).length === 0);
-  };
+    return newErrors;
+  }, [formData]);
+
+  const isValid = Object.keys(errors).length === 0;
 
   const handleChange = (field: keyof BasicInfo, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleDepartmentSelect = (department: string) => {
-    handleChange('department', department);
+    const newId = generateEmployeeId(department);
+    setFormData(prev => ({ ...prev, department, employee_id: newId }));
   };
 
   const handleNext = () => {

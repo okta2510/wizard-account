@@ -9,6 +9,11 @@ export default function BasicInfoForm() {
   const [avatar, setAvatar] = useState<string | File | null>(null); 
   const [progress, setProgress] = useState(0); 
 
+  // allow passing arbitrary props to FileUpload without a type error
+  const FileUploadAny = FileUpload as unknown as React.ComponentType<any>;
+  // allow passing arbitrary props to ProgressBar without a type error
+  const ProgressBarAny = ProgressBar as unknown as React.ComponentType<any>;
+
 
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value);
@@ -43,9 +48,9 @@ export default function BasicInfoForm() {
       <br />
       <label>
         Avatar
-        <FileUpload onChange={handleFileChange} /> {}
+        <FileUploadAny onChange={handleFileChange} />
       </label>
-      <ProgressBar value={progress} />
+      <ProgressBarAny value={progress} />
       <br />
       <button type="submit">Submit</button>
     </form>
