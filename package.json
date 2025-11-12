@@ -11,7 +11,6 @@
     "api2": "npx json-server --watch ./public/db-step2.json --port 4002"
   },
   "dependencies": {
-    "@radix-ui/react-toast": "^1.2.15",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "next": "16.0.1",

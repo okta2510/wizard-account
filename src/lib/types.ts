@@ -27,6 +27,7 @@ export interface Details {
   employment_type: string;
   office_location: string;
   notes: string;
+  user_role: string;
 }
 
 export interface Employee extends BasicInfo {
@@ -34,6 +35,7 @@ export interface Employee extends BasicInfo {
   employment_type?: string;
   office_location?: string;
   notes?: string;
+  user_role?: string;
 }
 
 export type Role = 'admin' | 'ops';

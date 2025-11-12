@@ -153,6 +153,7 @@ export function getMergedEmployees(page: number = 1, limit: number = 10): {
       employment_type: detail?.employment_type,
       office_location: detail?.office_location,
       notes: detail?.notes,
+      user_role: detail?.user_role,
     } as Employee;
   });
 

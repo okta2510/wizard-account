@@ -6,7 +6,9 @@ import StepOne from './step1/page';
 import StepTwo from './step2/page';
 import { Role, BasicInfo } from '../../lib/types';
 import { initializeMockData } from '@/lib/storage';
+import '../../styles/globals.css';
 import '../../styles/wizard.css';
+import Link from 'next/link';
 
 function WizardContent() {
   const searchParams = useSearchParams();
@@ -54,22 +56,26 @@ function WizardContent() {
     <div className="wizard-container">
       <div className="wizard-header">
         <h1 className="wizard-title">Employee Registration</h1>
-        <div className="role-selector">
-          <label htmlFor="role-select">Role:</label>
-          <select
-            id="role-select"
-            value={role}
-            onChange={(e) => handleRoleChange(e.target.value as Role)}
-            className="role-select"
-          >
-            <option value="admin">Admin</option>
-            <option value="ops">Ops</option>
-          </select>
+        <div className='flex gap-4 items-center'>
+          <Link className='text-neutral underline-0' href='/'>Employee Page</Link>
+          |
+          <div className="role-selector">
+            <label htmlFor="role-select">Role:</label>
+            <select
+              id="role-select"
+              value={role}
+              onChange={(e) => handleRoleChange(e.target.value as Role)}
+              className="role-select"
+            >
+              <option value="admin">Admin</option>
+              <option value="ops">Ops</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {role === 'admin' && (
-        <div className="wizard-steps">
+        <div className="wizard-steps justify-center">
           <div className={`wizard-step ${currentStep === 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}`}>
             <span className="step-number">1</span>
             <span className="step-label">Basic Info</span>

@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Employee } from '@/lib/types';
 import { getMergedEmployees, initializeMockData } from '@/lib/storage';
+import '../../styles/globals.css';
 import '../../styles/employees.css';
+
 
 export default function EmployeesPage() {
   const router = useRouter();
@@ -61,9 +63,10 @@ export default function EmployeesPage() {
                   <th>Name</th>
                   <th>Employee ID</th>
                   <th>Department</th>
-                  <th>Role</th>
+                  <th>Employement Role</th>
                   <th>Location</th>
                   <th>Employment Type</th>
+                  <th>User Role</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,12 +79,13 @@ export default function EmployeesPage() {
                         <div className="employee-photo-placeholder">N/A</div>
                       )}
                     </td>
-                    <td>{employee.full_name}</td>
-                    <td>{employee.employee_id}</td>
-                    <td>{employee.department}</td>
-                    <td>{employee.role}</td>
+                    <td>{employee.full_name || '-'}</td>
+                    <td>{employee.employee_id  || '-'}</td>
+                    <td>{employee.department  || '-'}</td>
+                    <td>{employee.role  || '-'}</td>
                     <td>{employee.office_location || '—'}</td>
                     <td>{employee.employment_type || '—'}</td>
+                    <td>{employee.user_role || '—'}</td>
                   </tr>
                 ))}
               </tbody>
