@@ -98,6 +98,9 @@ export default function Autocomplete({ value, onSelect, endpoint, placeholder, e
               {suggestion}
             </div>
           ))}
+          {suggestions.length === 0 && !inputValue && (
+            <div className="autocomplete-no-results">Type something, input search here...</div>
+          )} 
         </div>
       )}
       {error && <span className="form-error">{error}</span>}

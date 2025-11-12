@@ -44,7 +44,7 @@ export function initializeMockData() {
 
 export async function getDepartments(search?: string): Promise<Departments[]> {
   try {
-     const base = (process.env as any).API_DEPARTMENT || '';
+    const base = (process.env as any).API_DEPARTMENT || '';
     const url = new URL(`${base.replace(/\/+$/,'')}/departments`);
     if (search) url.searchParams.set('search', search);
     const res = await fetch(url.toString());
@@ -53,7 +53,6 @@ export async function getDepartments(search?: string): Promise<Departments[]> {
     if (Array.isArray(departments)) {
       localStorage.setItem(STORAGE_KEYS.DEPARTMENTS, JSON.stringify(departments));
     }
-    console.log(departments)
     return departments;
   } catch (err) {
     const departments = JSON.parse(localStorage.getItem(STORAGE_KEYS.DEPARTMENTS) || '[]');

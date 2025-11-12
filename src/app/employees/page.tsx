@@ -14,7 +14,7 @@ export default function EmployeesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = process.env.NEXT_PUBLIC_PER_PAGE || 10;
 
   useEffect(() => {
     initializeMockData();
