@@ -44,7 +44,7 @@ export function initializeMockData() {
 
 export async function getDepartments(search?: string): Promise<Departments[]> {
   try {
-    const base = (process.env as any).API_DEPARTMENT || '';
+    const base = (process.env as any).API_STEP1 || '';
     const url = new URL(`${base.replace(/\/+$/,'')}/departments`);
     if (search) url.searchParams.set('search', search);
     const res = await fetch(url.toString());
@@ -73,7 +73,7 @@ export async function getDepartments(search?: string): Promise<Departments[]> {
 
 export async function getLocations(search?: string): Promise<Departments[]> {
   try {
-    const base = (process.env as any).API_LOCATIONS || '';
+    const base = (process.env as any).API_STEP2 || '';
     const url = new URL(`${base.replace(/\/+$/,'')}/locations`);
     if (search) url.searchParams.set('search', search);
     const res = await fetch(url.toString());
