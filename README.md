@@ -29,6 +29,12 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Demo
+
+Watch a short demo of this project on YouTube:
+
+https://youtu.be/KL42GxSnZT8
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
@@ -56,13 +62,14 @@ If you prefer to run tests in watch mode during development:
 npm run test:watch
 ```
 
-# Start step1 API on port 4001
+## Start step1 API on port 4001
 ```bash
 npm run api
 ```
 
-# Start step2 API on port 4002
+## Start step2 API on port 4002
 
 ```bash
 npm run api2
 ```
+
